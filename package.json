@@ -1,0 +1,15 @@
+{
+  "name": "owldevsblog",
+  "version": "1.0.0",
+  "description": "OwlDevs blog website",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Clovis Ignacio Ferreira Da Costa Zanetti",
+  "license": "ISC"
+}
