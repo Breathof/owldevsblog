@@ -6,7 +6,7 @@ const admin = require('firebase-admin');
 const express =  require('express');
 const app = express();
 
-var serviceAccount = require(".owldevs-sdk-key.json");
+var serviceAccount = require("./owldevs-sdk-key.json");
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://owldevs-8ecbc.firebaseio.com"
@@ -15,11 +15,20 @@ admin.initializeApp({
 // admin.initializeApp();
 
 app.get('/posts', (req, res) =>{
-    admin.firestore().collection('post').get()
+    admin
+    .firestore()
+    .collection('post')
+    .orderBy('createdAt', 'desc')
+    .get()
     .then((data) => {
         let posts = [];
         data.forEach((doc) => {
-            posts.push(doc.data());
+            posts.push({
+                postId: doc.id,
+                body: doc.data().body,
+                user: doc.data().user,
+                createdAt: doc.data().createdAt
+            });
         });
         return res.json(posts);
     })
@@ -30,7 +39,7 @@ app.post('post', (req, res) => {
     const newPost = {
         body: req.body.body,
         user: req.body.user,
-        createdAt: admin.firestore.Timestamp.fromDate(new Date())
+        createdAt: new Date().toISOString()
     }
 
     admin.firestore()
